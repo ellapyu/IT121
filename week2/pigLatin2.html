@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pig Latin translator</title>
+    <!-- Script by Ella Yu
+         October 06, 2024 -->
+
+    <p id="prompt"></p>
+    <p id="translation"></p>
+
+</head>
+<body>
+
+<script>
+    let phrase = prompt("Enter a phrase: ");
+    document.getElementById("prompt").innerHTML = "You entered: " + phrase;
+
+    //remove white space from beginning and end of phrase
+    phrase = phrase.trim();
+
+    //create array with each word in phrase
+    phrase = phrase.split(" ");
+
+    // define consonants
+    let consonantLower = [
+    'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'
+    ];
+
+    let consonantUpper = [
+        'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'
+    ];
+
+    let consonant = consonantLower + consonantUpper;
+
+    //define vowels
+    let vowelLower = [
+        'a', 'e', 'i', 'o', 'u'
+    ];
+
+    let vowelUpper = [
+        'A', 'E', 'I', 'O', 'U'
+    ];
+
+    let vowel = vowelLower + vowelUpper;
+
+    //define translation
+    let translation = ""
+
+    //iterate over array
+    //for every word in phrase, translate to pig latin and append new word to the variable called translation
+    for (let word of phrase) {
+
+        //define the first and second letters in word
+        let char1 = word.at(0);
+        console.log(char1);
+
+        let char2 = word.at(1);
+        console.log(char2);
+
+        //if word begins with vowel, translate to pig latin
+        if (vowel.includes(char1)) {
+
+            word = word + "way";
+            translation += word + " ";
+        }
+
+        //if word begins with UPPERCASE consonant + vowel, translate to pig latin and capitalize only the first letter in the translation
+        else if (consonantUpper.includes(char1) && vowel.includes(char2)) {
+            char1 = char1.toLowerCase()
+            word = word.slice(1);
+            word = word.charAt(0).toUpperCase() + word.slice(1);
+            word = word.concat(char1, "ay"); 
+            translation += word + " ";
+        }
+
+        //if word begins with lowercase consonant + vowel, translate to pig latin
+        else if (consonantLower.includes(char1) && vowel.includes(char2)) {
+            word = word.slice(1);
+            word = word.concat(char1, "ay"); 
+            translation += word + " ";
+        }
+
+        //if word begins with two consonants, the first being uppercase, translate to pig latin and capitalize only the first letter in the translation
+        else if (consonantUpper.includes(char1) && consonant.includes(char2)) {
+            char1 = char1.toLowerCase()
+            word = word.slice(2);
+            word = word.concat(char1, char2, "ay");
+            word = word.charAt(0).toUpperCase() + word.slice(1);
+            translation += word + " ";
+        }
+
+        //if word begins with two consonants, first being lowercase, translate to pig latin
+        else if (consonantLower.includes(char1) && consonant.includes(char2)) {
+            word = word.slice(2);
+            word = word.concat(char1, char2, "ay");
+            translation += word + " ";
+        }
+
+        //if the input is a single consonant or blank, print error
+        else {
+            document.getElementById("translation").innerHTML = "Please type a multi-letter word.";
+        }
+
+        //print translation of phrase
+        document.getElementById("translation").innerHTML = "Your phrase in Pig Latin: " + translation;
+    } 
+
+</script>
+
+</body>
+</html>
