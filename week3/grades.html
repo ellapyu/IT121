@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student grades</title>
+    <h1>Student Grades</h1>
+    <div id="entry"></div>
+    <div id="entry2"></div>
+</head>
+<body>
+
+<script>
+    const grades = "jim|25, sue|32, mary|34, ann|22, ted|28, frank|15, lisa|19, mike|30, ahn|26, vishaya|27";
+
+    //split the string 'grades' into the alphabetized array 'pairs'
+    const pairs = grades.split(", ").sort();
+
+    //create empty string and arrays for later use
+    let entry = "";
+
+    let entry2 = "";
+
+    let student = [];
+
+    let gradeString = [];
+
+    let grade = [];
+
+    let sum = 0;
+    let gradeHigh = 0;
+    let gradeLow = 100;
+    let count = 0;
+
+    //loop through pairs and split each item in array
+    for (let pair of pairs) {
+        let pairArray = pair.split("|");
+        //create new array with each student
+        student.push(pairArray[0]);
+
+        //capitalize first letter of each name
+        for (let i = 0; i < student.length; i++) {
+        student[i] = student[i].charAt(0).toUpperCase() + student[i].slice(1);
+        }
+
+        //duplicate array to create 'entry' without altering original array
+        let name = student.slice();
+
+        //create new array with each grade
+        gradeString.push(pairArray[1]);
+
+        //convert each item in array to int
+        grade = gradeString.map(Number);
+
+        //duplicate array to create 'entry' without altering original array
+        let score = grade.slice();
+
+        //write entry to print name/score pairs
+        entry += name.pop() + " - " + score.pop() + "<br>";
+        }
+
+    //find the high, low, and average scores
+    for (let i in grade) {
+
+        //get sum of grades
+        sum += grade[i];
+
+        if (grade[i] > gradeHigh) {
+            gradeHigh = grade[i];
+        }
+
+        if (grade[i] < gradeLow) {
+            gradeLow = grade[i];
+        }
+        }
+
+    let avg = sum/grade.length
+
+    //find sum of students
+    for (let i in student) {
+
+        //get sum of grades
+        count += student[i];
+    }
+        
+    //write entry2 to print total students and grade stats
+    entry2 = "<b>Total Number of Students: </b>" + student.length + "<br>" +
+    "<b>Highest Grade: </b>" + gradeHigh + "<br>" 
+    + "<b>Lowest Grade: </b>" + gradeLow + "<br>"
+    + "<b>Average Grade: </b>" + avg.toFixed(2);
+
+
+    document.getElementById("entry").innerHTML = entry;
+    document.getElementById("entry2").innerHTML = entry2;
+
+
+</script>
+
+<style>
+    body {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        background-color: antiquewhite;
+    }
+
+    h1 {
+        font-size: 1.5em;
+        text-decoration: underline;
+    }
+    
+    div {
+        margin-bottom: 1em;
+    }
+
+</style>
+
+</body>
+</html>
