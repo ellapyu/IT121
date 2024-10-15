@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<title>Functions and Validation</title>
+</head>
+<body>
+
+<h1>Functions &amp; Validation</h1>
+
+<form id="form1" action="#" onsubmit="return validateForm(this);">
+  first name: <input type="text" name="firstname"><br>
+  last name: &nbsp;<input type="text" name="lastname"><br>
+  password: &nbsp;<input type="text" name="password"><br>
+
+  <button >Check</button>
+</form>
+
+<hr>
+<div id="message"></div>
+
+<script>
+
+const validateForm = (myForm) => {
+
+    let upperTally = 0;
+    let lowerTally = 0;
+
+    function checkCase(password) {
+        for (let i = 0; i < password.length; i++) {
+            if (password[i] == password[i].toUpperCase()) {
+                upperTally++;
+            } else if (password[i] == password[i].toLowerCase()) {
+                lowerTally++;
+            }
+        }
+        return {upperTally, lowerTally};
+    }
+
+    function validatePassword(password, upperTally, lowerTally) {
+        if (password.length >= 8 &&
+            upperTally > 0 && 
+            lowerTally > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    let firstname = myForm.firstname.value; // get text of firstname field
+
+    let lastname = myForm.lastname.value; // get text of lastname field
+
+    let password = myForm.password.value; // get text of password field
+
+    if (firstname && lastname) {
+
+        if(password) {
+            checkCase(password, upperTally, lowerTally);
+
+            if (!validatePassword(password, upperTally, lowerTally)) {
+            // use this syntax to update 'message' DIV with appropriate wording
+            $("#message").html("<p>Your password does not match the conditions.</p>");
+            } else {
+            $("#message").html("<p>All conditions are met!</p>");
+            }
+        } else {$("#message").html("<p>Password field cannot be empty.</p>");}
+    } else {$("#message").html("<p>Name fields cannot be empty.</p>");}
+
+    return false; // prevent page reload
+}
+
+</script>
+
+</body>
+</html> 
