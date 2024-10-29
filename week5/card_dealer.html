@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robo Dealer by Ella Yu</title>
+  <script
+          src="https://code.jquery.com/jquery-3.7.1.min.js"
+          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+          crossorigin="anonymous"></script>
+</head>
+<body>
+
+<h1>Robo Dealer</h1>
+
+  <button onclick="dealHand();">Deal Hand</button>
+
+<hr><h2>Your Draw:</h2>
+<div id="card_hand"></div>
+<hr><h2>Discard Pile:</h2>
+<div id="discard"></div>
+
+<script>
+
+    /* define Card object and deck of cards here */
+
+    let Cards = []; //// create empty array for the deck
+    let Deck = []; //// create empty array for deck which will remain unmodified after dealHand()
+
+    function Card(value, suit) {
+        this.value = value;
+        this.suit = suit;
+    };
+
+    function genCard() { //// create deck of cards
+        let suits = ["Hearts", "Spades", "Diamonds", "Clubs"];
+
+        suits.forEach(suit => { //// iterate function over each suit
+            for (let i = 2; i <= 14; i++) {
+                let ival;
+                if (i === 11) {
+                    ival = "Jack";
+                }
+                else if (i === 12) {
+                    ival = "Queen";
+                }
+                else if (i === 13) {
+                    ival = "King";
+                }
+                else if (i === 14) {
+                    ival = "Ace";
+                }
+                else {
+                    ival = i;
+                }
+                const card = new Card(ival, suit);
+                Cards.push(card); //// add card object to array Cards
+            }
+        });
+        console.log(Cards);
+    };
+
+    genCard();
+
+    function defineDeck() { //// copy Cards array to Deck, but properly named and formatted for printing
+        Cards.forEach(Card => {
+            const cardName = "- " + Card.value + " of " + Card.suit + "</br>";
+            Deck.push(cardName);
+        
+        });
+    };
+    defineDeck();
+    //console.log(Deck);
+
+    let discard = []; //// create array containing all drawn cards
+
+    const dealHand = () => {
+
+        let hand = []; //// create array for current hand
+
+        // get cards for hand
+        //// there are 52 cards, so there will be a remainder of 2 cards
+        //// create a hand of 5 cards until two cards are left
+        while (Cards.length > 2 && hand.length < 5) { 
+            const draw = Cards[Math.floor(Math.random() * Cards.length)]; //// draw random card from array Cards
+            console.log(draw);
+
+            //// name and format card for printing
+            const drawName = "- " + draw.value + " of " + draw.suit + "</br>";
+            console.log(drawName);
+
+            //// push formatted name to hand and discard for printing
+            hand.push(drawName);
+            discard.push(drawName);
+
+            //// delete card from array
+            const drawIndex = Cards.indexOf(draw);
+            Cards.splice(drawIndex, 1);
+        }
+
+        while (Cards.length <= 2 && Cards.length > 0 && hand.length < 2) {
+            const draw = Cards[Math.floor(Math.random() * Cards.length)]; //// draw random card from array Cards
+            console.log(draw);
+
+            //// name and format card for printing
+            const drawName = "- " + draw.value + " of " + draw.suit + "</br>";
+            console.log(drawName);
+
+            //// push formatted name to hand and discard for printing  
+            hand.push(drawName);
+            discard.push(drawName);
+
+            //// delete card from array
+            const drawIndex = Cards.indexOf(draw);
+            Cards.splice(drawIndex, 1);
+        }
+
+        let discardPile;
+        if (hand.length === 5) {
+        discardPile = discard.slice(0, -5); //// exclude current hand from discard pile
+        } if (hand.length === 2) {
+        discardPile = discard.slice(0, -2); //// exclude current hand from discard pile 
+        } if (hand.length === 0) {
+            discardPile = Deck; //// once all cards are drawn, sort discardPile as Deck
+        }
+        // console.log(hand);
+        // console.log(discard);
+        console.log(discardPile);
+        console.log(Cards);
+
+
+        //// print hand and discard pile
+        $("#card_hand").html(hand);
+        $("#discard").html(discardPile);
+
+        return false; //// prevent page reload
+    }
+
+</script>
+
+</body>
+</html>
